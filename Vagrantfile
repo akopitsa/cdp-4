@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
     echo "*.loc" >> /etc/puppetlabs/puppet/autosign.conf
     if  grep -Fxq "[main]" /etc/puppetlabs/puppet/puppet.conf
     then
-    echo "Settings Already addded"
+    echo "Puppet Server Settings Already addded"
     else
     echo """
 dns_alt_names = #{$hostnamepuppetserver},server
@@ -44,7 +44,7 @@ fi
 systemctl start puppetserver
 systemctl enable puppetserver
 /opt/puppetlabs/puppet/bin/gem install r10k
-if  grep -Fxq "[main]" /etc/puppetlabs/puppet/puppet.conf
+if  [ -f "/etc/puppetlabs/puppet/r10k.yaml" ];
 then
 echo "R10K Settings Already addded"
 else
