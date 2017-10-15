@@ -1,1 +1,0 @@
-{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/home/andrey/EPAM/CDP/VAGRANTFILES/EPAM/CDP/var-4","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
