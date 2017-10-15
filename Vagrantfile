@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     end
     puppetserver.vm.provision "shell", inline: <<-SHELL
       yum update
-      yum install -y ntp vim mc
+      yum install -y ntp vim mc git
       timedatectl set-timezone Europe/Kiev
       ntpdate pool.ntp.org
       sed -i 's/server 0.centos.pool.ntp.org/server 0.ua.pool.ntp.org/g' /etc/ntp.conf
@@ -27,6 +27,10 @@ Vagrant.configure("2") do |config|
       yum -y install puppetserver
 #      sed -i 's/-Xms2g -Xmx2g/-Xms3g -Xmx3g/g' /etc/sysconfig/puppetserver
     echo "*.loc" >> /etc/puppetlabs/puppet/autosign.conf
+    if  grep -Fxq "[main]" /etc/puppetlabs/puppet/puppet.conf
+    then
+    echo "Settings Already addded"
+    else
     echo """
 dns_alt_names = #{$hostnamepuppetserver},server
 autosign = /etc/puppetlabs/puppet/autosign.conf
@@ -36,6 +40,7 @@ server = #{$hostnamepuppetserver}
 environment = production
 runinterval = 1m
 """ >> /etc/puppetlabs/puppet/puppet.conf
+fi
 systemctl start puppetserver
 systemctl enable puppetserver
 /opt/puppetlabs/puppet/bin/gem install r10k
@@ -68,7 +73,7 @@ SHELL
       echo "#{$ipaddresspuppetserver} #{$hostnamepuppetserver}" >> /etc/hosts
       if  grep -Fxq "[main]" /etc/puppetlabs/puppet/puppet.conf
       then
-      echo "Already addded"
+      echo "Settings Already addded"
       else
       echo """
 [main]
