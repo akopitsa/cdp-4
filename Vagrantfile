@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     end
     puppetserver.vm.provision "shell", inline: <<-SHELL
       yum update
-      yum install -y ntp vim mc git
+      yum install -y ntp vim mc
       timedatectl set-timezone Europe/Kiev
       ntpdate pool.ntp.org
       sed -i 's/server 0.centos.pool.ntp.org/server 0.ua.pool.ntp.org/g' /etc/ntp.conf
@@ -44,7 +44,8 @@ echo ''':cachedir: '/var/cache/r10k'
   cdp:
     remote: 'https://github.com/akopitsa/cdp-control-repo.git'
     basedir: '/etc/puppetlabs/code/environments'
-    prefix: false''' >> /etc/puppetlabs/puppet/r10k.yaml
+    prefix: false
+''' >> /etc/puppetlabs/puppet/r10k.yaml
 /opt/puppetlabs/puppet/bin/r10k deploy environment production -pv -c /etc/puppetlabs/puppet/r10k.yaml
 /opt/puppetlabs/puppet/bin/r10k deploy environment development -pv -c /etc/puppetlabs/puppet/r10k.yaml
 SHELL
