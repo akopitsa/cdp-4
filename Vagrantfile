@@ -44,6 +44,10 @@ fi
 systemctl start puppetserver
 systemctl enable puppetserver
 /opt/puppetlabs/puppet/bin/gem install r10k
+if  grep -Fxq "[main]" /etc/puppetlabs/puppet/puppet.conf
+then
+echo "R10K Settings Already addded"
+else
 echo ''':cachedir: '/var/cache/r10k'
 :sources:
   cdp:
@@ -51,6 +55,7 @@ echo ''':cachedir: '/var/cache/r10k'
     basedir: '/etc/puppetlabs/code/environments'
     prefix: false
 ''' >> /etc/puppetlabs/puppet/r10k.yaml
+fi
 /opt/puppetlabs/puppet/bin/r10k deploy environment production -pv -c /etc/puppetlabs/puppet/r10k.yaml
 /opt/puppetlabs/puppet/bin/r10k deploy environment development -pv -c /etc/puppetlabs/puppet/r10k.yaml
 SHELL
