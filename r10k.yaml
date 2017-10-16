@@ -1,0 +1,6 @@
+:cachedir: /var/cache/r10k
+:sources:
+  cdp:
+    remote: https://github.com/akopitsa/cdp-control-repo.git
+    basedir: /etc/puppetlabs/code/environments
+    prefix: false
