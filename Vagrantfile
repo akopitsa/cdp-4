@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     end
     puppetserver.vm.provision "shell", inline: <<-SHELL
       yum update
-      yum install -y ntp vim mc git tree
+      yum install -y ntp vim mc git tree net-tools
       timedatectl set-timezone Europe/Kiev
       ntpdate pool.ntp.org
       sed -i 's/server 0.centos.pool.ntp.org/server 0.ua.pool.ntp.org/g' /etc/ntp.conf
@@ -87,7 +87,7 @@ SHELL
   end
     puppetagent.vm.provision "shell", inline: <<-SHELL
       yum update
-      yum install -y vim ntpdate mc tree
+      yum install -y vim ntpdate mc tree net-tools
       timedatectl set-timezone Europe/Kiev
       ntpdate pool.ntp.org
       rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
