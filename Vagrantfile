@@ -45,9 +45,7 @@ environment = production
 runinterval = 1m
 """ >> /etc/puppetlabs/puppet/puppet.conf
 fi
-echo """
----
-:backends:
+echo """:backends:
   - yaml
 :hierarchy:
   - "nodes/%{::trusted.certname}"
@@ -57,7 +55,6 @@ echo """
 :yaml:
 # datadir is empty here, so hiera uses its defaults:
 # - /etc/puppetlabs/code/environments/%{environment}/hieradata on *nix
-# - %CommonAppData%\PuppetLabs\code\environments\%{environment}\hieradata on Windows
 # When specifying a datadir, make sure the directory exists.
   :datadir: '/etc/puppetlabs/code/environments/%{::environment}/hieradata'
 """ > /etc/puppetlabs/puppet/hiera.yaml
