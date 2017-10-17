@@ -4,3 +4,4 @@
     remote: https://github.com/akopitsa/cdp-control-repo.git
     basedir: /etc/puppetlabs/code/environments
     prefix: false
+:purgedirs: /etc/puppetlabs/code/environments  
