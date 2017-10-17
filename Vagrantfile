@@ -26,7 +26,11 @@ Vagrant.configure("2") do |config|
       rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
       yum -y install puppetserver
 #      sed -i 's/-Xms2g -Xmx2g/-Xms3g -Xmx3g/g' /etc/sysconfig/puppetserver
+    if [ -f '/etc/puppetlabs/puppet/autosign.conf' ]; then
+      echo "Autosign file already exist"
+    else
     echo "*.loc" >> /etc/puppetlabs/puppet/autosign.conf
+    fi
     if  grep -Fxq "[main]" /etc/puppetlabs/puppet/puppet.conf
     then
     echo "Puppet Server Settings Already addded"
@@ -41,6 +45,22 @@ environment = production
 runinterval = 1m
 """ >> /etc/puppetlabs/puppet/puppet.conf
 fi
+echo """
+---
+:backends:
+  - yaml
+:hierarchy:
+  - "nodes/%{::trusted.certname}"
+  - "nodes/%{::fqdn}"
+  - common
+
+:yaml:
+# datadir is empty here, so hiera uses its defaults:
+# - /etc/puppetlabs/code/environments/%{environment}/hieradata on *nix
+# - %CommonAppData%\PuppetLabs\code\environments\%{environment}\hieradata on Windows
+# When specifying a datadir, make sure the directory exists.
+  :datadir: '/etc/puppetlabs/code/environments/%{::environment}/hieradata'
+""" > /etc/puppetlabs/puppet/hiera.yaml
 systemctl start puppetserver
 systemctl enable puppetserver
 /opt/puppetlabs/puppet/bin/gem install r10k
