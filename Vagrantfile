@@ -75,6 +75,11 @@ echo ''':cachedir: '/var/cache/r10k'
 fi
 /opt/puppetlabs/puppet/bin/r10k deploy environment production -pv -c /etc/puppetlabs/puppet/r10k.yaml
 /opt/puppetlabs/puppet/bin/r10k deploy environment development -pv -c /etc/puppetlabs/puppet/r10k.yaml
+cat <<- EOF > cron.jobs
+*/5 * * * *  /opt/puppetlabs/puppet/bin/r10k deploy environment production -pv -c /etc/puppetlabs/puppet/r10k.yaml
+*/5 * * * *  /opt/puppetlabs/puppet/bin/r10k deploy environment development -pv -c /etc/puppetlabs/puppet/r10k.yaml
+EOF
+crontab cron.jobs
 SHELL
  end
   config.vm.define "puppetagent" do |puppetagent|
