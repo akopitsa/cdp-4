@@ -47,6 +47,7 @@ runinterval = 1m
 fi
 echo """:backends:
   - yaml
+  - eyaml
 :hierarchy:
   - "nodes/%{::trusted.certname}"
   - "nodes/%{::fqdn}"
@@ -58,6 +59,8 @@ echo """:backends:
 # When specifying a datadir, make sure the directory exists.
   :datadir: '/etc/puppetlabs/code/environments/%{::environment}/hieradata'
 """ > /etc/puppetlabs/puppet/hiera.yaml
+/opt/puppetlabs/puppet/bin/gem install hiera-eyaml
+/opt/puppetlabs/puppet/bin/eyaml createkeys
 systemctl start puppetserver
 systemctl enable puppetserver
 /opt/puppetlabs/puppet/bin/gem install r10k
