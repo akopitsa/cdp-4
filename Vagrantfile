@@ -24,7 +24,10 @@ Vagrant.configure("2") do |config|
       systemctl restart ntpd
       systemctl enable ntpd
       rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+      yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      yum -y install https://yum.theforeman.org/releases/1.16/el7/x86_64/foreman-release.rpm
       yum -y install puppetserver
+      yum -y install foreman-installer
 #      sed -i 's/-Xms2g -Xmx2g/-Xms3g -Xmx3g/g' /etc/sysconfig/puppetserver
     if [ -f '/etc/puppetlabs/puppet/autosign.conf' ]; then
       echo "Autosign file already exist"
@@ -42,7 +45,7 @@ autosign = /etc/puppetlabs/puppet/autosign.conf
 certname = #{$hostnamepuppetserver}
 server = #{$hostnamepuppetserver}
 environment = production
-runinterval = 1m
+runinterval = 2m
 """ >> /etc/puppetlabs/puppet/puppet.conf
 fi
 echo """:backends:
@@ -63,6 +66,7 @@ echo """:backends:
 /opt/puppetlabs/puppet/bin/eyaml createkeys
 systemctl start puppetserver
 systemctl enable puppetserver
+#foreman-installer
 /opt/puppetlabs/puppet/bin/gem install r10k
 if  [ -f "/etc/puppetlabs/puppet/r10k.yaml" ];
 then
@@ -117,3 +121,4 @@ runinterval = 1m
     SHELL
     end
 end
+# Initial credentials are admin / HFaLJXUrCFmpdqbB
